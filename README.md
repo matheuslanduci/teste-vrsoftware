@@ -46,3 +46,34 @@ $ npm start
 7. Acesse o frontend no navegador:
    - URL: `http://localhost:4200`
 
+## Testes unitários
+
+Para executar os testes unitários do backend e do frontend, siga os passos abaixo:
+
+### Backend
+
+1. Navegue até o diretório do backend:
+
+```bash
+$ cd api
+```
+
+2. Execute os testes unitários:
+
+```bash
+$ npm run test:cov
+```
+
+### Frontend
+
+1. Navegue até o diretório do frontend:
+
+```bash
+$ cd frontend
+```
+
+2. Execute os testes unitários:
+
+```bash
+$ ng test
+```
