@@ -1,0 +1,75 @@
+<div class="notification-container">
+  <mat-card class="notification-card">
+    <mat-card-header>
+      <div class="header-content">
+        <mat-card-title>Mensagens</mat-card-title>
+        <div class="connection-status">
+          <mat-icon [color]="isWebSocketConnected ? 'primary' : 'warn'"
+            [matTooltip]="isWebSocketConnected ? 'WebSocket Conectado' : 'WebSocket Desconectado'"
+            class="connection-icon">
+            {{ isWebSocketConnected ? 'wifi' : 'wifi_off' }}
+          </mat-icon>
+          <span class="connection-text" [ngClass]="isWebSocketConnected ? 'connected' : 'disconnected'">
+            {{ isWebSocketConnected ? 'Conectado' : 'Desconectado' }}
+          </span>
+        </div>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div class="input-section">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Conteúdo da Mensagem</mat-label>
+          <input matInput [(ngModel)]="message" placeholder="Digite sua mensagem aqui..." [disabled]="isLoading"
+            (keyup.enter)="onSendMessage()" />
+        </mat-form-field>
+
+        <div class="button-group">
+          <button mat-raised-button color="primary" (click)="onSendMessage()" [disabled]="isLoading || !message.trim()"
+            class="send-button">
+            <mat-spinner *ngIf="isLoading" diameter="20"></mat-spinner>
+            {{ isLoading ? 'Enviando...' : 'Enviar Notificação' }}
+          </button>
+
+          <button mat-stroked-button color="accent" (click)="onReconnectWebSocket()" [disabled]="isWebSocketConnected"
+            class="reconnect-button" matTooltip="Reconectar WebSocket">
+            <mat-icon>refresh</mat-icon>
+            Reconectar
+          </button>
+        </div>
+      </div>
+
+
+      <div class="notifications-section" *ngIf="messages.length > 0">
+        <div class="section-header">
+          <h3>Notificações Enviadas</h3>
+          <button mat-icon-button color="warn" (click)="onClearNotifications()"
+            matTooltip="Limpar todas as notificações">
+            <mat-icon>clear_all</mat-icon>
+          </button>
+        </div>
+        <mat-list>
+          <mat-list-item *ngFor="let notification of messages; trackBy: trackByMessageId">
+            <div class="notification-item">
+              <div class="notification-content">
+                <strong>ID:</strong> {{ notification.mensagemId | slice:0:8 }}...
+                <br>
+                <strong>Mensagem:</strong> {{ notification.conteudoMensagem }}
+              </div>
+              <div class="notification-status">
+                <span class="status-badge" [ngClass]="getStatusClass(notification.status)">
+                  {{ notification.status }}
+                </span>
+              </div>
+            </div>
+            <mat-divider></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </div>
+
+      <div class="empty-state" *ngIf="messages.length === 0">
+        <p>Nenhuma mensagem enviada ainda.</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
